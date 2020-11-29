@@ -50,7 +50,7 @@ def create_workout(workout: schemas.WorkoutCreate, db: Session = Depends(get_db)
     return crud.create_workout(db, workout)
 
 
-@app.post("/set", response_model=schemas.ExerciseSet)
+@app.post("/exercise_set", response_model=schemas.ExerciseSet)
 def create_set(exerciseSet: schemas.ExerciseSetCreate, db: Session = Depends(get_db)):
     db_workout = crud.get_workout(db, exerciseSet.workout_id)
     if not db_workout:
@@ -62,7 +62,7 @@ def create_set(exerciseSet: schemas.ExerciseSetCreate, db: Session = Depends(get
     return created_set
 
 
-@app.post("/set/{set_id}/acceleration_data")
+@app.post("/exercise_set/{set_id}/acceleration_data")
 def insert_acceleration_data(
     set_id: int,
     background_tasks: BackgroundTasks,
@@ -86,7 +86,7 @@ def insert_acceleration_data(
     return {"Size": len(acceleration_data_df.index)}
 
 
-@app.post("/set/{set_id}/gyroscope_data")
+@app.post("/exercise_set/{set_id}/gyroscope_data")
 def insert_gyroscope_data(
     set_id: int,
     background_tasks: BackgroundTasks,
