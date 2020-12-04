@@ -41,7 +41,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/workout", response_model=schemas.Workout)
 def create_workout(workout: schemas.WorkoutCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, workout.user_id)
+    db_user = crud.get_user(db, workout.userID)
     if not db_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -52,7 +52,7 @@ def create_workout(workout: schemas.WorkoutCreate, db: Session = Depends(get_db)
 
 @app.post("/exercise_set", response_model=schemas.ExerciseSet)
 def create_set(exerciseSet: schemas.ExerciseSetCreate, db: Session = Depends(get_db)):
-    db_workout = crud.get_workout(db, exerciseSet.workout_id)
+    db_workout = crud.get_workout(db, exerciseSet.workoutID)
     if not db_workout:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -62,47 +62,32 @@ def create_set(exerciseSet: schemas.ExerciseSetCreate, db: Session = Depends(get
     return created_set
 
 
-@app.post("/exercise_set/{set_id}/acceleration_data")
+@app.post("/acceleration_data")
 def insert_acceleration_data(
-    set_id: int,
     background_tasks: BackgroundTasks,
     acceleration_data: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    db_set = crud.get_set_by_id(db, set_id)
-    if not db_set:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Set not registered for acceleration data upload",
-        )
     acceleration_data_df = pd.read_csv(
         acceleration_data.file,
         header=None,
-        names=["accX", "accY", "accZ"],
+        names=["accX", "accY", "accZ", "exerciseSetID", "workoutID", "userID"],
     )
     acceleration_data_df["index"] = acceleration_data_df.index
-    acceleration_data_df["exercise_set_id"] = set_id
     background_tasks.add_task(crud.insert_acceleration_data, db, acceleration_data_df)
     return {"Size": len(acceleration_data_df.index)}
 
 
-@app.post("/exercise_set/{set_id}/gyroscope_data")
+@app.post("/gyroscope_data")
 def insert_gyroscope_data(
-    set_id: int,
     background_tasks: BackgroundTasks,
     gyroscope_data: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    db_set = crud.get_set_by_id(db, set_id)
-    if not db_set:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Set not registered for gyroscope data upload",
-        )
     gyroscope_data_df = pd.read_csv(
         gyroscope_data.file,
         header=None,
-        names=["gyrX", "gyrY", "gyrZ"],
+        names=["gyrX", "gyrY", "gyrZ", "exerciseSetID", "workoutID", "userID"],
     )
     gyroscope_data_df["index"] = gyroscope_data_df.index
     gyroscope_data_df["exercise_set_id"] = set_id

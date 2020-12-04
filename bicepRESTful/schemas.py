@@ -10,10 +10,13 @@ class AccelerationDataBase(BaseModel):
     accX: float
     accY: float
     accZ: float
+    exerciseSetID: str
+    workoutID: str
+    userID: str
 
 
 class AccelerationData(AccelerationDataBase):
-    exercise_set_id: int
+    pass
 
 
 class GyroscopeDataBase(BaseModel):
@@ -21,14 +24,19 @@ class GyroscopeDataBase(BaseModel):
     gyrX: float
     gyrY: float
     gyrZ: float
+    exerciseSetID: str
+    workoutID: str
+    userID: str
 
 
 class GyroscopeData(GyroscopeDataBase):
-    exercise_set_id: int
+    pass
 
 
 class ExerciseSetBase(BaseModel):
-    workout_id: int
+    exerciseSetID: str
+    workoutID: str
+    userID: str,
     exercise: str
     reps: int
 
@@ -38,16 +46,11 @@ class ExerciseSetCreate(ExerciseSetBase):
 
 
 class ExerciseSet(ExerciseSetBase):
-    id: int
-    acceleration_data: List[AccelerationData]
-    gyroscope_data: List[GyroscopeData]
-
-    class Config:
-        orm_mode = True
-
+    pass
 
 class WorkoutBase(BaseModel):
-    user_id: int
+    workoutID: str
+    userID: str
     time: datetime
 
 
@@ -56,14 +59,10 @@ class WorkoutCreate(WorkoutBase):
 
 
 class Workout(WorkoutBase):
-    id: int
-    exercise_sets: List[ExerciseSet]
-
-    class Config:
-        orm_mode = True
-
+    pass
 
 class UserBase(BaseModel):
+    userID: str
     email: str
     name: str
 
@@ -73,8 +72,4 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
-    workouts: List[Workout] = []
-
-    class Config:
-        orm_mode = True
+    pass
