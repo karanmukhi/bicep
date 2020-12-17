@@ -1,12 +1,8 @@
 import os
 from configparser import ConfigParser
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.engine.url import URL
 
 
-def config(filename="config/database_config.ini", section="trainer_one"):
+def getConfig(filename="config/database_config.ini", section="trainer_one"):
     parser = ConfigParser()
     parser.read(filename)
     db_config = {}
@@ -23,9 +19,3 @@ def config(filename="config/database_config.ini", section="trainer_one"):
             "Need TR_AI_NER_POSTGRES_PASSWORD as environment variablen\nTry:\nexport TR_AI_NER_POSTGRES_PASSWORD='password'"
         )
     return db_config
-
-
-SQLALCHEMY_DATABASE_URL = URL(**config())
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
