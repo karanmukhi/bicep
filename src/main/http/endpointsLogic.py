@@ -1,5 +1,4 @@
 import psycopg2
-from psycopg2.extensions import AsIs
 from typing import Dict
 from fastapi import HTTPException, status, UploadFile
 import simplejson as json
