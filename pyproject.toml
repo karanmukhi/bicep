@@ -5,20 +5,24 @@ description = "API for uploading to bigquery"
 authors = ["solomoncotton <solcotton@live.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
-fastapi = "^0.62.0"
-pydantic = "^1.7.3"
-uvicorn = "^0.13.0"
-SQLAlchemy = "^1.3.20"
-pandas = "^1.1.5"
-python-multipart = "^0.0.5"
-simplejson = "^3.17.2"
-psycopg2 = "^2.8.6"
-configparser = "^5.0.1"
+python = ">=3.10,<4.0"
+fastapi = ">=0.115"
+pydantic = ">=2.0"
+uvicorn = ">=0.34"
+pandas = ">=2.0"
+python-multipart = ">=0.0.9"
+simplejson = ">=3.19"
+psycopg2-binary = ">=2.9"
+configparser = ">=5.0"
 
-[tool.poetry.dev-dependencies]
-pytest = "^6.1.2"
-pytest-mock = "^3.3.1"
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0"
+pytest-mock = ">=3.12"
+httpx = ">=0.27"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["src/test"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -23,20 +23,20 @@ def ping():
 
 @app.post(usersEndpoint, response_model=User)
 def addUser(user: User) -> User:
-    addRowsToTableLogic(UsersTable(), [user.dict()])
+    addRowsToTableLogic(UsersTable(), [user.model_dump()])
     return user
 
 
 @app.post(workoutsEndpoint, response_model=Workout)
 def addWorkout(workout: Workout) -> Workout:
-    addRowsToTableLogic(WorkoutsTable(), [workout.dict()])
+    addRowsToTableLogic(WorkoutsTable(), [workout.model_dump()])
     return workout
 
 
 @app.post(exerciseSetsEndpoint, response_model=ExerciseSet)
 def addExerciseSet(exerciseSet: ExerciseSet) -> ExerciseSet:
-    print([exerciseSet.dict()])
-    addRowsToTableLogic(ExerciseSetsTable(), [exerciseSet.dict()])
+    print([exerciseSet.model_dump()])
+    addRowsToTableLogic(ExerciseSetsTable(), [exerciseSet.model_dump()])
     return exerciseSet
 
 
