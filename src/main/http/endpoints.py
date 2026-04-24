@@ -55,4 +55,4 @@ def addGyroData(background_tasks: BackgroundTasks, gyroscope_data: UploadFile = 
 
 
 def serve():
-    uvicorn.run(app, host="0.0.0.0", port=os.getenv("API_PORT"))
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("API_PORT", 8000)))

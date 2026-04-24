@@ -2,7 +2,9 @@ import os
 from configparser import ConfigParser
 
 
-def getConfig(filename="config/database_config.ini", section="trainer_one"):
+def getConfig(filename=None, section="trainer_one"):
+    if filename is None:
+        filename = os.path.join(os.path.dirname(__file__), "database_config.ini")
     parser = ConfigParser()
     parser.read(filename)
     db_config = {}
@@ -16,6 +18,7 @@ def getConfig(filename="config/database_config.ini", section="trainer_one"):
         db_config["password"] = os.environ["TR_AI_NER_POSTGRES_PASSWORD"]
     except:
         raise Exception(
-            "Need TR_AI_NER_POSTGRES_PASSWORD as environment variablen\nTry:\nexport TR_AI_NER_POSTGRES_PASSWORD='password'"
+            "Need TR_AI_NER_POSTGRES_PASSWORD as environment variable\nTry:\nexport TR_AI_NER_POSTGRES_PASSWORD='password'"
         )
+    db_config["host"] = os.environ.get("POSTGRES_HOST", db_config.get("host", "localhost"))
     return db_config
